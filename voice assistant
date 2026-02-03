@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Assistant</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: #22c55e;
+      color: black;
+      cursor: pointer;
+    }
+    #text {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎙️ Voice Assistant</h1>
+  <button onclick="startListening()">Start Listening</button>
+  <div id="text">Say: "Open YouTube"</div>
+
+  <script>
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+
+    function startListening() {
+      recognition.start();
+      document.getElementById("text").innerText = "Listening...";
+    }
+
+    recognition.onresult = function (event) {
+      const command = event.results[0][0].transcript.toLowerCase();
+      document.getElementById("text").innerText = "You said: " + command;
+
+      if (command.includes("youtube")) {
+        window.open("https://www.youtube.com", "_blank");
+      } 
+      else if (command.includes("whatsapp")) {
+        window.open("https://wa.me/", "_blank");
+      } 
+      else if (command.includes("google") || command.includes("chrome")) {
+        window.open("https://www.google.com", "_blank");
+      } 
+      else if (command.includes("facebook")) {
+        window.open("https://www.facebook.com", "_blank");
+      } 
+      else if (command.includes("instagram")) {
+        window.open("https://www.instagram.com", "_blank");
+      } 
+      else {
+        speak("Sorry, I don't understand");
+      }
+    };
+
+    function speak(text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = "en-US";
+      window.speechSynthesis.speak(speech);
+    }
+  </script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
